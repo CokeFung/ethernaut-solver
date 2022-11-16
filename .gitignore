@@ -8,3 +8,4 @@ cache
 artifacts
 cache
 package-lock.json
+solijson*
