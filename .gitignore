@@ -7,4 +7,4 @@ cache
 .vscode
 artifacts
 cache
-package-lock.js
+package-lock.json
