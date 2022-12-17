@@ -1,24 +1,48 @@
-require("@nomiclabs/hardhat-waffle");
+require('@nomiclabs/hardhat-truffle5');
 require('@openzeppelin/hardhat-upgrades');
-require('hardhat-dependency-compiler');
+require("hardhat-gas-reporter");
 
+/**
+ * @type import('hardhat/config').HardhatUserConfig
+ */
 module.exports = {
-    networks: {
-      hardhat: {
-        allowUnlimitedContractSize: true
-      }  
+  solidity: {
+    compilers: [
+      {
+        version: '0.5.3',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      {
+        version: '0.6.12',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+      {
+        version: '0.8.12',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 1000,
+          },
+        },
+      },
+    ],
+  },
+  paths: {
+    artifacts: './build',
+  },
+  networks: {
+    hardhat: {
+      chainId: 1337,
     },
-    solidity: {
-      compilers: [
-        { version: "0.8.7" },
-        { version: "0.7.6" },
-        { version: "0.6.6" }
-      ]
-    },
-    // dependencyCompiler: {
-    //   paths: [
-    //     '@gnosis.pm/safe-contracts/contracts/GnosisSafe.sol',
-    //     '@gnosis.pm/safe-contracts/contracts/proxies/GnosisSafeProxyFactory.sol',
-    //   ],
-    // }
-}
+  },
+};
