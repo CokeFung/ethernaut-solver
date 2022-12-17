@@ -8,7 +8,7 @@ describe('[Challenge] Example Vuln', function () {
     before(async function () {
         /** SETUP SCENARIO - NO NEED TO CHANGE ANYTHING HERE */
         [deployer, attacker] = await ethers.getSigners();
-        const FallbackFactory = await ethers.getContractFactory('Fallback', deployer);
+        const FallbackFactory = await ethers.getContractFactory('ExampleFallback', deployer);
         this.target = await FallbackFactory.deploy();
     });
 
