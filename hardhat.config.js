@@ -48,6 +48,7 @@ module.exports = {
     goerli: {
       url: process.env.RPC_URL,
       accounts: [process.env.ACCOUNT],
+      network_id: 5
     }
   },
 };
