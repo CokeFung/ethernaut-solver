@@ -1,6 +1,7 @@
 require('@nomiclabs/hardhat-truffle5');
 require('@openzeppelin/hardhat-upgrades');
 require("hardhat-gas-reporter");
+require('dotenv').config();
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -44,5 +45,9 @@ module.exports = {
     hardhat: {
       chainId: 1337,
     },
+    goerli: {
+      url: process.env.RPC_URL,
+      accounts: RPC_URL.ACCOUNT,
+    }
   },
 };
