@@ -9,3 +9,4 @@ artifacts
 cache
 package-lock.json
 solijson*
+.env
