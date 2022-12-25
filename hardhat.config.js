@@ -52,7 +52,7 @@ module.exports = {
       url: process.env.RPC_URL,
       accounts: [process.env.ACCOUNT],
       network_id: 5,
-      gasPrice: 200000000000, // 200 Gwei is works better in testnet 
+      gasPrice: 2000000000, // 2 Gwei
     }
   },
 };
