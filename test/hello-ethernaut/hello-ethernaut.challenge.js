@@ -19,7 +19,6 @@ describe('[Challenge] Hello Ethernaut', () => {
         } else { // local network - hardhat  
             /** local test **/
             [deployer, attacker] = await ethers.getSigners();
-            [attacker] = await ethers.getSigners();
             const InstanceFactory = await ethers.getContractFactory('Instance', deployer);
             this.target = await InstanceFactory.deploy("s3cur3P@ssw0rd!!");
         }
