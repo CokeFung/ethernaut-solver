@@ -7,6 +7,9 @@ require('dotenv').config();
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
+  gasReporter: {
+    enabled: false // summary table is tkaing tooooooooo long
+  },
   solidity: {
     compilers: [
       {
@@ -48,7 +51,8 @@ module.exports = {
     goerli: {
       url: process.env.RPC_URL,
       accounts: [process.env.ACCOUNT],
-      network_id: 5
+      network_id: 5,
+      gasPrice: 200000000000, // 200 Gwei is works better in testnet 
     }
   },
 };
