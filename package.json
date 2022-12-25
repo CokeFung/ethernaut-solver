@@ -43,6 +43,7 @@
     ]
   },
   "scripts": {
-    "example-vuln": "yarn hardhat test test/example-vuln/example-vuln.challenge.js"
+    "example-vuln": "yarn hardhat test test/example-vuln/example-vuln.challenge.js",
+    "hello-ethernaut": "yarn hardhat test test/hello-ethernaut/hello-ethernaut.challenge.js"
   }
 }
