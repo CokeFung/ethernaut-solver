@@ -22,7 +22,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 
 ### Solution 
 - [x]  Hello Ethernaut
-- [ ]  Fallback
+- [x]  Fallback
 - [ ]  Fallout
 - [ ]  Coin Flip
 - [ ]  Telephone
