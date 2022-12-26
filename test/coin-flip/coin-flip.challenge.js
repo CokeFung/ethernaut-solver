@@ -41,6 +41,6 @@ describe('[Challenge] Example Vuln', function () {
 
     after(async () => {
         /** SUCCESS CONDITIONS */
-        expect(await this.target.owner()).eq(attacker.address);
+        expect(await this.target.owner()).to.be.eq(attacker.address);
     });
 });
