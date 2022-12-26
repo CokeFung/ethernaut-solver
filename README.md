@@ -24,7 +24,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 ### Solution 
 - [x]  Hello Ethernaut
 - [x]  Fallback
-- [ ]  Fallout
+- [x]  Fallout
 - [ ]  Coin Flip
 - [ ]  Telephone
 - [ ]  Token
