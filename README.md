@@ -27,7 +27,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Fallback
 - [x]  Fallout
 - [x]  Coin Flip
-- [ ]  Telephone
+- [x]  Telephone
 - [ ]  Token
 - [ ]  Delegation
 - [ ]  Force
