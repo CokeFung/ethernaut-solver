@@ -13,14 +13,14 @@ describe('[Challenge] Hello Ethernaut', () => {
         if (chainID == 5){ // goerli testnet
             /** connect to Dapp in goerli **/
             [attacker] = await ethers.getSigners();
-            const InstanceFactory = await ethers.getContractFactory('Instance');
-            this.target = InstanceFactory.attach("");
+            const ContractFactory = await ethers.getContractFactory('Instance');
+            this.target = ContractFactory.attach("");
             
         } else { // local network - hardhat  
             /** local test **/
             [deployer, attacker] = await ethers.getSigners();
-            const InstanceFactory = await ethers.getContractFactory('Instance', deployer);
-            this.target = await InstanceFactory.deploy("s3cur3P@ssw0rd!!");
+            const ContractFactory = await ethers.getContractFactory('Instance', deployer);
+            this.target = await ContractFactory.deploy("s3cur3P@ssw0rd!!");
         }
     });
 

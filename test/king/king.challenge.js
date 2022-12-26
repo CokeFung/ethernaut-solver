@@ -13,8 +13,8 @@ describe('[Challenge] Example Vuln', function () {
         if (chainID == 5){ // goerli testnet
             /** connect to Dapp in goerli **/
             [attacker] = await ethers.getSigners();
-            const InstanceFactory = await ethers.getContractFactory('ExampleFallback');
-            this.target = InstanceFactory.attach("");
+            const ContractFactory = await ethers.getContractFactory('ExampleFallback');
+            this.target = ContractFactory.attach("");
             
         } else { // local network - hardhat  
             /** local test **/
