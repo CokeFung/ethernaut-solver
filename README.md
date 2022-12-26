@@ -15,6 +15,11 @@ Solving ethernaut with fully using ethers or web3 JS (no more remixd)
 ### warning
 please verify the dependencies' version in `package.js` before compile contracts
 
+### step to exploit
+1. change challenge name [L:4]
+2. change contract name [L:16,22]
+3. write your exploiting script in `Exploit`
+
 ### Solution 
 - [x]  Hello Ethernaut
 - [ ]  Fallback
