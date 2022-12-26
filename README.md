@@ -19,6 +19,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 1. change challenge name [L:4]
 2. change contract name [L:16,22]
 3. write your exploiting script in `Exploit`
+4. write the solved conditions follow the level in `After` 
 
 ### Solution 
 - [x]  Hello Ethernaut
