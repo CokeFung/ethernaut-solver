@@ -16,6 +16,31 @@ Solving ethernaut with fully using ethers or web3 JS (no more remixd)
 please verify the dependencies' version in `package.js` before compile contracts
 
 ### Solution 
-- [ ]  a
-- [ ]  b
-- [ ]  c
+- [x]  Hello Ethernaut
+- [ ]  Fallback
+- [ ]  Fallout
+- [ ]  Coin Flip
+- [ ]  Telephone
+- [ ]  Token
+- [ ]  Delegation
+- [ ]  Force
+- [ ]  Vault
+- [ ]  King
+- [ ]  Re-entrancy
+- [ ]  Elevator
+- [ ]  Privacy
+- [ ]  Gatekeeper One
+- [ ]  Gatekepper Two
+- [ ]  Naught Coin
+- [ ]  Preservation
+- [ ]  Recovery
+- [ ]  MagicNumber
+- [ ]  Alien Codex
+- [ ]  Denial
+- [ ]  Shop
+- [ ]  Dex
+- [ ]  Dex Two
+- [ ]  Puzzle Wallet
+- [ ]  Motorbike
+- [ ]  DoubleEntryPoint
+- [ ]  Good Samaritan
