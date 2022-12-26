@@ -14,7 +14,7 @@ describe('[Challenge] Hello Ethernaut', () => {
             /** connect to Dapp in goerli **/
             [attacker] = await ethers.getSigners();
             const InstanceFactory = await ethers.getContractFactory('Instance');
-            this.target = InstanceFactory.attach("0x4853EF93d859B2D95c2BC8C01B0F96C3B1b276dC");
+            this.target = InstanceFactory.attach("");
             
         } else { // local network - hardhat  
             /** local test **/
