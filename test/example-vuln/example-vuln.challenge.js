@@ -37,7 +37,7 @@ describe('[Challenge] Example Vuln', function () {
         await attacker.sendTransaction(tx);
         // Withdraw all ethers in the contract
         await this.target.connect(attacker).withdraw();
-    });
+    }).timeout(0);
 
     after(async () => {
         /** SUCCESS CONDITIONS */
