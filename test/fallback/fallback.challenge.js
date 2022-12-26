@@ -14,7 +14,7 @@ describe('[Challenge] Fallback', function () {
             /** connect to Dapp in goerli **/
             [attacker] = await ethers.getSigners();
             const ContractFactory = await ethers.getContractFactory('Fallback');
-            this.target = ContractFactory.attach("0x8e70e652B5dBEA12f298a40B6BbdCD2C7c42a55F");
+            this.target = ContractFactory.attach("");
             
         } else { // local network - hardhat  
             /** local test **/
