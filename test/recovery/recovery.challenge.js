@@ -19,8 +19,8 @@ describe('[Challenge] Example Vuln', function () {
         } else { // local network - hardhat  
             /** local test **/
             [deployer, attacker] = await ethers.getSigners();
-            const FallbackFactory = await ethers.getContractFactory('ExampleFallback', deployer);
-            this.target = await FallbackFactory.deploy();
+            const ContractFactory = await ethers.getContractFactory('ExampleFallback', deployer);
+            this.target = await ContractFactory.deploy();
         }
     });
 
@@ -37,7 +37,7 @@ describe('[Challenge] Example Vuln', function () {
         await attacker.sendTransaction(tx);
         // Withdraw all ethers in the contract
         await this.target.connect(attacker).withdraw();
-    });
+    }).timeout(0);
 
     after(async () => {
         /** SUCCESS CONDITIONS */
