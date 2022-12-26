@@ -14,3 +14,8 @@ Solving ethernaut with fully using ethers or web3 JS (no more remixd)
      `npm run-script example-vuln -- --network goerli`
 ### warning
 please verify the dependencies' version in `package.js` before compile contracts
+
+### Solution 
+- [ ]  a
+- [ ]  b
+- [ ]  c
