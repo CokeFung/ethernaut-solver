@@ -30,7 +30,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Telephone
 - [x]  Token
 - [x]  Delegation
-- [ ]  Force
+- [x]  Force
 - [ ]  Vault
 - [ ]  King
 - [ ]  Re-entrancy
