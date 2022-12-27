@@ -31,7 +31,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Token
 - [x]  Delegation
 - [x]  Force
-- [ ]  Vault
+- [x]  Vault
 - [ ]  King
 - [ ]  Re-entrancy
 - [ ]  Elevator
