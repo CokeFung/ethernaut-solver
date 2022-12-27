@@ -29,7 +29,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Coin Flip
 - [x]  Telephone
 - [x]  Token
-- [ ]  Delegation
+- [x]  Delegation
 - [ ]  Force
 - [ ]  Vault
 - [ ]  King
