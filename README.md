@@ -33,7 +33,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Force
 - [x]  Vault
 - [x]  King
-- [ ]  Re-entrancy
+- [x]  Re-entrancy
 - [ ]  Elevator
 - [ ]  Privacy
 - [ ]  Gatekeeper One
