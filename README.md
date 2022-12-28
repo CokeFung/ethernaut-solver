@@ -38,7 +38,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Privacy
 - [x]  Gatekeeper One
 - [x]  Gatekepper Two
-- [ ]  Naught Coin
+- [x]  Naught Coin
 - [ ]  Preservation
 - [ ]  Recovery
 - [ ]  MagicNumber
