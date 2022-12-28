@@ -40,7 +40,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Gatekepper Two
 - [x]  Naught Coin
 - [x]  Preservation
-- [ ]  Recovery
+- [x]  Recovery
 - [ ]  MagicNumber
 - [ ]  Alien Codex
 - [ ]  Denial
