@@ -36,7 +36,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Re-entrancy
 - [x]  Elevator
 - [x]  Privacy
-- [ ]  Gatekeeper One
+- [x]  Gatekeeper One
 - [ ]  Gatekepper Two
 - [ ]  Naught Coin
 - [ ]  Preservation
