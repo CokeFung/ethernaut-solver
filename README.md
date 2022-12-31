@@ -42,7 +42,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Preservation
 - [x]  Recovery
 - [ ]  MagicNumber
-- [ ]  Alien Codex
+- [x]  Alien Codex
 - [ ]  Denial
 - [ ]  Shop
 - [ ]  Dex
