@@ -43,7 +43,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Recovery
 - [ ]  MagicNumber
 - [x]  Alien Codex
-- [ ]  Denial
+- [x]  Denial
 - [ ]  Shop
 - [ ]  Dex
 - [ ]  Dex Two
