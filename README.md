@@ -45,7 +45,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Alien Codex
 - [x]  Denial
 - [x]  Shop
-- [ ]  Dex
+- [x]  Dex
 - [ ]  Dex Two
 - [ ]  Puzzle Wallet
 - [ ]  Motorbike
