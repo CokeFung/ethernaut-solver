@@ -1,55 +1,90 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
+pragma experimental ABIEncoderV2;
 
-import "openzeppelin-contracts-08/token/ERC20/IERC20.sol";
-import "openzeppelin-contracts-08/token/ERC20/ERC20.sol";
-import 'openzeppelin-contracts-08/access/Ownable.sol';
+import "../helpers/UpgradeableProxy-08.sol";
 
-contract DexTwo is Ownable {
-  address public token1;
-  address public token2;
-  constructor() {}
+contract PuzzleProxy is UpgradeableProxy {
+    address public pendingAdmin;
+    address public admin;
 
-  function setTokens(address _token1, address _token2) public onlyOwner {
-    token1 = _token1;
-    token2 = _token2;
-  }
+    constructor(address _admin, address _implementation, bytes memory _initData) UpgradeableProxy(_implementation, _initData) {
+        admin = _admin;
+    }
 
-  function add_liquidity(address token_address, uint amount) public onlyOwner {
-    IERC20(token_address).transferFrom(msg.sender, address(this), amount);
-  }
-  
-  function swap(address from, address to, uint amount) public {
-    require(IERC20(from).balanceOf(msg.sender) >= amount, "Not enough to swap");
-    uint swapAmount = getSwapAmount(from, to, amount);
-    IERC20(from).transferFrom(msg.sender, address(this), amount);
-    IERC20(to).approve(address(this), swapAmount);
-    IERC20(to).transferFrom(address(this), msg.sender, swapAmount);
-  } 
+    modifier onlyAdmin {
+      require(msg.sender == admin, "Caller is not the admin");
+      _;
+    }
 
-  function getSwapAmount(address from, address to, uint amount) public view returns(uint){
-    return((amount * IERC20(to).balanceOf(address(this)))/IERC20(from).balanceOf(address(this)));
-  }
+    function proposeNewAdmin(address _newAdmin) external {
+        pendingAdmin = _newAdmin;
+    }
 
-  function approve(address spender, uint amount) public {
-    SwappableTokenTwo(token1).approve(msg.sender, spender, amount);
-    SwappableTokenTwo(token2).approve(msg.sender, spender, amount);
-  }
+    function approveNewAdmin(address _expectedAdmin) external onlyAdmin {
+        require(pendingAdmin == _expectedAdmin, "Expected new admin by the current admin is not the pending admin");
+        admin = pendingAdmin;
+    }
 
-  function balanceOf(address token, address account) public view returns (uint){
-    return IERC20(token).balanceOf(account);
-  }
+    function upgradeTo(address _newImplementation) external onlyAdmin {
+        _upgradeTo(_newImplementation);
+    }
 }
 
-contract SwappableTokenTwo is ERC20 {
-  address private _dex;
-  constructor(address dexInstance, string memory name, string memory symbol, uint initialSupply) ERC20(name, symbol) {
-        _mint(msg.sender, initialSupply);
-        _dex = dexInstance;
-  }
+contract PuzzleWallet {
+    address public owner;
+    uint256 public maxBalance;
+    mapping(address => bool) public whitelisted;
+    mapping(address => uint256) public balances;
 
-  function approve(address owner, address spender, uint256 amount) public {
-    require(owner != _dex, "InvalidApprover");
-    super._approve(owner, spender, amount);
-  }
+    function init(uint256 _maxBalance) public {
+        require(maxBalance == 0, "Already initialized");
+        maxBalance = _maxBalance;
+        owner = msg.sender;
+    }
+
+    modifier onlyWhitelisted {
+        require(whitelisted[msg.sender], "Not whitelisted");
+        _;
+    }
+
+    function setMaxBalance(uint256 _maxBalance) external onlyWhitelisted {
+      require(address(this).balance == 0, "Contract balance is not 0");
+      maxBalance = _maxBalance;
+    }
+
+    function addToWhitelist(address addr) external {
+        require(msg.sender == owner, "Not the owner");
+        whitelisted[addr] = true;
+    }
+
+    function deposit() external payable onlyWhitelisted {
+      require(address(this).balance <= maxBalance, "Max balance reached");
+      balances[msg.sender] += msg.value;
+    }
+
+    function execute(address to, uint256 value, bytes calldata data) external payable onlyWhitelisted {
+        require(balances[msg.sender] >= value, "Insufficient balance");
+        balances[msg.sender] -= value;
+        (bool success, ) = to.call{ value: value }(data);
+        require(success, "Execution failed");
+    }
+
+    function multicall(bytes[] calldata data) external payable onlyWhitelisted {
+        bool depositCalled = false;
+        for (uint256 i = 0; i < data.length; i++) {
+            bytes memory _data = data[i];
+            bytes4 selector;
+            assembly {
+                selector := mload(add(_data, 32))
+            }
+            if (selector == this.deposit.selector) {
+                require(!depositCalled, "Deposit can only be called once");
+                // Protect against reusing msg.value
+                depositCalled = true;
+            }
+            (bool success, ) = address(this).delegatecall(data[i]);
+            require(success, "Error while delegating call");
+        }
+    }
 }
