@@ -46,7 +46,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Denial
 - [x]  Shop
 - [x]  Dex
-- [ ]  Dex Two
+- [x]  Dex Two
 - [ ]  Puzzle Wallet
 - [ ]  Motorbike
 - [ ]  DoubleEntryPoint
