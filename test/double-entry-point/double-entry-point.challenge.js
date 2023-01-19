@@ -78,12 +78,15 @@ describe('[Challenge] DoubleEntryPoint', function () {
 
     after(async () => {
         /** SUCCESS CONDITIONS */
+        const { solidity } = require('ethereum-waffle')
+        const chai = require('chai');
+        chai.use(solidity);
         const network = await ethers.provider.getNetwork();
         const chainID = network.chainId;
         if(chainID == 1337){
-            expect(this.cryptoVault.connect(deployer).sweepToken(this.LGT.address)).to.be.revertedWith(
+            chai.expect(this.cryptoVault.connect(deployer).sweepToken(this.LGT.address)).to.be.revertedWith(
                 "Alert has been triggered, reverting"
-            ); // expect reverted is not working, and I dont know why. ignore it
+            );
         }
     });
 });
