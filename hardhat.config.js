@@ -8,7 +8,7 @@ require('dotenv').config();
  */
 module.exports = {
   gasReporter: {
-    enabled: false // summary table is tkaing tooooooooo long
+    enabled: false // summary table is taking tooooooooo long
   },
   solidity: {
     compilers: [
