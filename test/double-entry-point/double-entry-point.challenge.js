@@ -81,12 +81,8 @@ describe('[Challenge] DoubleEntryPoint', function () {
         const { solidity } = require('ethereum-waffle')
         const chai = require('chai');
         chai.use(solidity);
-        const network = await ethers.provider.getNetwork();
-        const chainID = network.chainId;
-        if(chainID == 1337){
-            chai.expect(this.cryptoVault.connect(deployer).sweepToken(this.LGT.address)).to.be.revertedWith(
-                "Alert has been triggered, reverting"
-            );
-        }
+        chai.expect(this.cryptoVault.connect(deployer).sweepToken(this.LGT.address)).to.be.revertedWith(
+            "Alert has been triggered, reverting"
+        );
     });
 });
