@@ -68,6 +68,7 @@
     "good-samaritan": "yarn hardhat test test/good-samaritan/good-samaritan.challenge.js",
     "gatekeeper-two": "yarn hardhat test test/gatekeeper-two/gatekeeper-two.challenge.js",
     "gatekeeper-one": "yarn hardhat test test/gatekeeper-one/gatekeeper-one.challenge.js",
+    "gatekeeper-three": "yarn hardhat test test/gatekeeper-three/gatekeeper-three.challenge.js",
     "denial": "yarn hardhat test test/denial/denial.challenge.js",
     "elevator": "yarn hardhat test test/elevator/elevator.challenge.js",
     "dex": "yarn hardhat test test/dex/dex.challenge.js",
