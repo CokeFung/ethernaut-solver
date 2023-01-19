@@ -16,7 +16,7 @@ describe('[Challenge] PuzzleWallet', function () {
             [attacker] = await ethers.getSigners();
             const PuzzleProxyContractFactory = await ethers.getContractFactory('PuzzleProxy');
             const PuzzleWalletContractFactory = await ethers.getContractFactory('PuzzleWallet')
-            this.target = PuzzleProxyContractFactory.attach("0xeaEFEAFd7D5EDCFAB299d5101ceb872A38759399");
+            this.target = PuzzleProxyContractFactory.attach("");
             let implementationAddress = await ethers.provider.getStorageAt(
                 this.target.address, 
                 "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"

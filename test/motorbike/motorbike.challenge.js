@@ -14,7 +14,7 @@ describe('[Challenge] Motorbike', function () {
             /** connect to Dapp in goerli **/
             [attacker] = await ethers.getSigners();
             const MotorbikeContractFactory = await ethers.getContractFactory('Motorbike');
-            this.target = MotorbikeContractFactory.attach("0xc97fBFaC4734868B2f54CD54308e0733a5FBcfD4");
+            this.target = MotorbikeContractFactory.attach("");
         } else { // local network - hardhat  
             /** local test **/
             [deployer, attacker] = await ethers.getSigners();

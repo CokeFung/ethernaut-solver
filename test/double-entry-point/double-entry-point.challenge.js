@@ -17,7 +17,7 @@ describe('[Challenge] DoubleEntryPoint', function () {
             const FortaFactory = await ethers.getContractFactory('Forta');
             const CryptoVaultFactory = await ethers.getContractFactory('CryptoVault');
             const LegacyTokenFactory = await ethers.getContractFactory('LegacyToken');
-            this.DET = DoubleEntryPointTokenFactory.attach("0x80489665C2f3005b990C9cE7aBD155da0B1e164f");
+            this.DET = DoubleEntryPointTokenFactory.attach("");
             this.forta = FortaFactory.attach(await this.DET.forta());
             this.cryptoVault = CryptoVaultFactory.attach(await this.DET.cryptoVault());
             this.LGT = LegacyTokenFactory.attach(await this.DET.delegatedFrom());
