@@ -41,7 +41,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Naught Coin
 - [x]  Preservation
 - [x]  Recovery
-- [ ]  MagicNumber
+- [ ]  MagicNumber (I just skipped it:)
 - [x]  Alien Codex
 - [x]  Denial
 - [x]  Shop
