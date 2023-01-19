@@ -50,4 +50,4 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Puzzle Wallet
 - [x]  Motorbike
 - [X]  DoubleEntryPoint
-- [ ]  Good Samaritan
+- [x]  Good Samaritan
