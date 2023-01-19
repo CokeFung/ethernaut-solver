@@ -51,4 +51,4 @@ please verify the dependencies' version in `package.js` before compile contracts
 - [x]  Motorbike
 - [X]  DoubleEntryPoint
 - [x]  Good Samaritan
-- [ ]  Gatekeeper Three
+- [x]  Gatekeeper Three
