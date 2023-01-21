@@ -7,15 +7,15 @@ Solving ethernaut by using Hardhat (with ethers.js)
 1. Navigate to project's root directory 
 2. Execute the following command
     `python3 python3 create-test-script.py`
-3. Copy the script config to `package.json`
+3. Copy the script config to `package.json`, and place it in the `scripts` section
 
 ### RPC serevr address
-get it from : https://dashboard.alchemy.com/ 
+personally recommended : https://alchemy.com/
 
 ### example testing command
 - testing on local network
     `npm run-script example-vuln`
-- testing on specify network
+- testing on specified network
      `npm run-script example-vuln -- --network goerli`
 ### warning
 please verify the dependencies' version in `package.js` before compile contracts
