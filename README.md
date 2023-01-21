@@ -3,6 +3,7 @@ Solving ethernaut by using Hardhat (with ethers.js)
 
 ## Note
 ### create test script template
+0. Add new levels to `contracts` directory
 1. Navigate to project's root directory 
 2. Execute the following command
     `python3 python3 create-test-script.py`
