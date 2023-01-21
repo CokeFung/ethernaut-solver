@@ -1,6 +1,10 @@
 # Ethernaut Solver (Hardhat)
 Solving ethernaut by using Hardhat (with ethers.js)
 
+## unsolved template
+for those who need a template for solving ethernaut, I have created an `unsolved` branch for ya.
+you can copy the template and do whatever you want (for learning only).
+
 ## Note
 ### create test script template
 0. Add new levels to `contracts` directory
