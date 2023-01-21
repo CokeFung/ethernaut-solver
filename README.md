@@ -12,10 +12,10 @@ Solving ethernaut by using Hardhat (with ethers.js)
 ### RPC serevr address
 personally recommended : https://alchemy.com/
 
-### example testing command
-- testing on local network
+### example executing command
+- executing on local network
     `npm run-script example-vuln`
-- testing on specified network
+- executing on specified network
      `npm run-script example-vuln -- --network goerli`
 ### warning
 please verify the dependencies' version in `package.js` before compile contracts
