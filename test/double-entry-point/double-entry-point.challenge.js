@@ -47,33 +47,7 @@ describe('[Challenge] DoubleEntryPoint', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        console.log(`\t Info...`);
-        console.log(`\t DET   : ${this.DET.address}`);
-        console.log(`\t LGT   : ${this.LGT.address}`);
-        console.log(`\t Forta : ${this.forta.address}`);
-        console.log(`\t Vault : ${this.cryptoVault.address}`);
-        console.log(`\t Player  : ${this.player}`);
-        console.log(`\t Attacker: ${attacker.address}`);
-        console.log(`\t Vault underlying: ${await this.cryptoVault.underlying()}`);
-        console.log(`\t LGT delegate: ${await this.LGT.delegate()}`);
-        console.log(`\t LGT.balances[vault]: ${ethers.utils.formatEther(await this.LGT.balanceOf(this.cryptoVault.address))} LGT`);
-        console.log(`\t DET.balances[vault]: ${ethers.utils.formatEther(await this.DET.balanceOf(this.cryptoVault.address))} DET`);
-        console.log(`\t DetectionBot[player]: ${await this.forta.usersDetectionBots(attacker.address)}`);
-
-        console.log(`\t Deploying DetectionBot...`);
-        const DetectionBotFactory = await ethers.getContractFactory('DetectionBot', attacker);
-        const DetectionBot = await DetectionBotFactory.deploy(
-            attacker.address,
-            this.forta.address,
-            this.cryptoVault.address,
-            this.DET.address
-        );
-        console.log(`\t DetectionBot: ${DetectionBot.address}`);
-
-        console.log(`\t Setting DetectionBot...`);
-        let setTx = await this.forta.connect(attacker).setDetectionBot(DetectionBot.address); await setTx.wait();
-        console.log(`\t Player Bot  : ${await this.forta.usersDetectionBots(attacker.address)}`);
-
+        
     }).timeout(0);
 
     after(async () => {

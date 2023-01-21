@@ -33,19 +33,7 @@ describe('[Challenge] Good Samaritan', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        console.log(`\t Info...`);
-        console.log(`\t Coin.balances[Wallet]  : ${await this.coin.balances(this.wallet.address)}`);
-        console.log(`\t Coin.balances[Attacker]: ${await this.coin.balances(attacker.address)}`);
-
-        console.log(`\t Deploying badguy...`);
-        const BadguyFactory = await ethers.getContractFactory('Badguy', attacker);
-        const Badguy = await BadguyFactory.deploy(this.coin.address);
-
-        console.log(`\t Exploiting...`);
-        let expTX = await Badguy.connect(attacker).exploit(this.target.address, {gasLimit:200000}); await expTX.wait();
-        console.log(`\t Coin.balances[Wallet]  : ${await this.coin.balances(this.wallet.address)}`);
-        console.log(`\t Coin.balances[Attacker]: ${await this.coin.balances(attacker.address)}`);
-
+        
     }).timeout(0);
 
     after(async () => {

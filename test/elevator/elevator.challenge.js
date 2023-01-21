@@ -26,14 +26,7 @@ describe('[Challenge] Elevator', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const BuildingSolverFactory = await ethers.getContractFactory('BuildingSolver', attacker);
-        const BuildingSolver = await BuildingSolverFactory.deploy();
-        let pwnTX = await BuildingSolver.connect(attacker).pwn(
-            this.target.address, 
-            1337, 
-            {gasLimit: 200000}
-        ); await pwnTX.wait();
-        console.log(`\t top: ${await this.target.top()}`);
+        
     }).timeout(0);
 
     after(async () => {

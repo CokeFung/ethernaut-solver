@@ -26,6 +26,7 @@ describe('[Challenge] MagicNum', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
+        
     }).timeout(0);
 
     after(async () => {

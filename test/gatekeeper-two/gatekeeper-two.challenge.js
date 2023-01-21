@@ -26,13 +26,7 @@ describe('[Challenge] GatekeeperTwo', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        const GatekeeperTwoSolverFactory = await ethers.getContractFactory('GatekeeperTwoSolver', attacker);
-        const GatekeeperTwoSolver = await GatekeeperTwoSolverFactory.deploy(
-            this.target.address, 
-            {gasLimit: 200000} // 200K is enough?
-        );
-        console.log(`\t entrant: ${await this.target.entrant()}`);
-        await GatekeeperTwoSolver.waiting();
+        
     }).timeout(0);
 
     after(async () => {

