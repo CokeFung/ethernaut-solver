@@ -6,11 +6,11 @@ for those who need a template for solving ethernaut, I have created an `unsolved
 you can copy the template and do whatever you want (for learning only).
 
 ## Note
-### create test script template
+### create test script template and README file for new levels
 0. Add new levels to `contracts` directory
 1. Navigate to project's root directory 
 2. Execute the following command
-    `python3 python3 create-test-script.py`
+    `python3 create-template.py`
 3. Copy the script config to `package.json`, and place it in the `scripts` section
 
 ### RPC serevr address
