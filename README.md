@@ -1,5 +1,5 @@
-# ethernaut-solver
-Solving ethernaut with fully using ethers or web3 JS (no more remixd)
+# Ethernaut Solver (Hardhat)
+Solving ethernaut by using Hardhat (with ethers.js)
 
 ## Note
 ### create test script template
@@ -8,7 +8,7 @@ Solving ethernaut with fully using ethers or web3 JS (no more remixd)
     `python3 python3 create-test-script.py`
 3. Copy the script config to `package.json`
 
-### RPC Serevr address
+### RPC serevr address
 get it from : https://dashboard.alchemy.com/ 
 
 ### example testing command
@@ -26,7 +26,7 @@ please verify the dependencies' version in `package.js` before compile contracts
 3. write your exploiting script in `it(Exploit)`
 4. write the solved conditions follow the level in `after` 
 
-### Solution 
+### solutions
 - [x]  Hello Ethernaut
 - [x]  Fallback
 - [x]  Fallout
