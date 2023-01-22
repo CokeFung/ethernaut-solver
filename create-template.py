@@ -6,14 +6,6 @@ def main():
     contractList = run("ls ./contracts/")
     testList = run("ls ./test/")
 
-    """ Create README for each levels (if not exist) """
-    print("Creating README...")
-    readme_template = "./test/example-vuln/README.md"
-    readme_content = open(readme_template).read()
-    for name in contractList:
-        if name != "helpers": 
-            createREADME(readme_content, name)
-
     """ Find diff of 2 lists """
     set_dif = set(contractList).symmetric_difference(set(testList))
     toCreateList = list(set_dif)
@@ -28,6 +20,13 @@ def main():
         print('\t"%s": "yarn hardhat test test/%s/%s.challenge.js",' % (d,d,d))
     print("}\nDone!")
 
+    """ Create README for each levels (if not exist) """
+    print("Creating README...")
+    readme_template = "./test/example-vuln/README.md"
+    readme_content = open(readme_template).read()
+    for name in contractList:
+        if name != "helpers": 
+            createREADME(readme_content, name)
 
 def run(command):
     output = subprocess.check_output(command, shell=True)
