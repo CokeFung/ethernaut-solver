@@ -11,11 +11,13 @@ def main():
     readme_template = "./test/example-vuln/README.md"
     readme_content = open(readme_template).read()
     for name in contractList:
-        createREADME(readme_content, name)
+        if name != "helpers": 
+            createREADME(readme_content, name)
 
     """ Find diff of 2 lists """
     set_dif = set(contractList).symmetric_difference(set(testList))
     toCreateList = list(set_dif)
+    toCreateList.pop(toCreateList.index("helpers"))
     print(toCreateList)
 
     """ Create testing scripts from diff list """
